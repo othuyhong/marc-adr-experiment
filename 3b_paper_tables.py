@@ -10,6 +10,8 @@ Kết quả (thư mục paper_tables/):
     model_pairs.csv      chênh lệch ghép cặp giữa từng cặp model: CI, Wilcoxon, Holm (6 cặp)
     group_pooled.csv     mỗi nhóm chủ đề: n ADR test, F1, MCS, và chênh lệch RAG - no-RAG của F1
     length_effects.csv   tương quan Spearman giữa độ dài output và các chỉ số; tỷ lệ độ dài output/reference
+    truncation_check.csv MCS của từng model, tách theo đơn vị (ADR, điều kiện) không có lượt nào bị cắt
+                         và đơn vị có ít nhất một lượt bị cắt ở giới hạn token
 """
 import json
 import os
@@ -116,9 +118,25 @@ def main():
                  "value": float(rec["truncated"].mean()), "n": len(rec)})
     pd.DataFrame(rows).to_csv(os.path.join(OUT, "length_effects.csv"), index=False)
 
+    # MCS có phụ thuộc vào việc output bị cắt ở giới hạn token không?
+    n_trunc = (rec.groupby(["test_id", "model", "condition"])["truncated"].sum()
+               .rename("n_truncated_runs").reset_index())
+    merged = units.merge(n_trunc, on=["test_id", "model", "condition"])
+    rows = []
+    for m in models:
+        x = merged[merged["model"] == m]
+        for label, part in [("no truncated run", x[x["n_truncated_runs"] == 0]),
+                            ("at least one truncated run", x[x["n_truncated_runs"] > 0]),
+                            ("all units", x)]:
+            rows.append({"model": m, "units": label, "n_units": len(part),
+                         "mcs_tfidf": float(part["mcs_tfidf"].mean()) if len(part) else np.nan,
+                         "mcs_sbert": float(part["mcs_sbert"].mean()) if len(part) else np.nan,
+                         "answer_chars": float(part["answer_chars"].mean()) if len(part) else np.nan})
+    pd.DataFrame(rows).to_csv(os.path.join(OUT, "truncation_check.csv"), index=False)
+
     pd.set_option("display.width", 220)
     pd.set_option("display.max_columns", 40)
-    for name in ["model_pooled", "model_pairs", "group_pooled", "length_effects"]:
+    for name in ["model_pooled", "model_pairs", "group_pooled", "length_effects", "truncation_check"]:
         print(f"\n=== {name}.csv ===")
         print(pd.read_csv(os.path.join(OUT, name + ".csv")).round(4).to_string(index=False))
 
