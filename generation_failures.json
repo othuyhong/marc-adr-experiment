@@ -1,0 +1,164 @@
+[
+  {
+    "key": "7da864918d|groq-qwen3.8-27b|no_rag|3",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791536342.7627764
+  },
+  {
+    "key": "7da864918d|groq-qwen3.8-27b|no_rag|5",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791536418.6413732
+  },
+  {
+    "key": "7da864918d|groq-qwen3.8-27b|rag|1",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791536556.4658294
+  },
+  {
+    "key": "7da864918d|groq-qwen3.8-27b|rag|3",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791536685.8385572
+  },
+  {
+    "key": "7da864918d|groq-qwen3.8-27b|rag|5",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791536760.0051358
+  },
+  {
+    "key": "695197c5d8|groq-qwen3.8-27b|no_rag|1",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791536930.5967612
+  },
+  {
+    "key": "695197c5d8|groq-qwen3.8-27b|no_rag|3",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791537059.460366
+  },
+  {
+    "key": "31e48ae49a|groq-qwen3.8-27b|rag|5",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791538486.0378685
+  },
+  {
+    "key": "8776d45cad|groq-qwen3.8-27b|no_rag|2",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791538579.8340528
+  },
+  {
+    "key": "8776d45cad|groq-qwen3.8-27b|no_rag|3",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791538668.4418309
+  },
+  {
+    "key": "8776d45cad|groq-qwen3.8-27b|no_rag|5",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791538797.7281897
+  },
+  {
+    "key": "8776d45cad|groq-qwen3.8-27b|rag|3",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791539021.345657
+  },
+  {
+    "key": "a26e2ca061|groq-qwen3.8-27b|no_rag|1",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791539194.344153
+  },
+  {
+    "key": "d00997b238|groq-qwen3.8-27b|no_rag|3",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791541065.6899142
+  },
+  {
+    "key": "d00997b238|groq-qwen3.8-27b|no_rag|4",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791541160.0760133
+  },
+  {
+    "key": "d00997b238|groq-qwen3.8-27b|rag|4",
+    "config_id": "7d0f1bdc5279",
+    "error": "HTTP 429",
+    "timestamp": 1791541374.4073358
+  },
+  {
+    "key": "695197c5d8|groq-qwen3.8-27b|rag|2",
+    "config_id": "0255355cb9f3",
+    "error": "HTTP 503",
+    "timestamp": 1791591332.6241994
+  },
+  {
+    "key": "31e48ae49a|groq-qwen3.8-27b|no_rag|5",
+    "config_id": "0255355cb9f3",
+    "error": "HTTP 429",
+    "timestamp": 1791591530.6790104
+  },
+  {
+    "key": "d0581d2d64|groq-qwen3.8-27b|no_rag|3",
+    "config_id": "0255355cb9f3",
+    "error": "mạng: HTTPSConnectionPool(host='api.groq.com', port=443): Max retries exceeded with url: /openai/v1/chat/completions (Caused by NameResolutionError(\"HTTPSConnection(host='api.groq.com', port=443): Failed to resolve 'api.groq.com' ([Errno 11001] getaddrinfo failed)\"))",
+    "timestamp": 1791599694.112896
+  },
+  {
+    "key": "d0581d2d64|groq-qwen3.8-27b|no_rag|4",
+    "config_id": "0255355cb9f3",
+    "error": "mạng: HTTPSConnectionPool(host='api.groq.com', port=443): Max retries exceeded with url: /openai/v1/chat/completions (Caused by NameResolutionError(\"HTTPSConnection(host='api.groq.com', port=443): Failed to resolve 'api.groq.com' ([Errno 11001] getaddrinfo failed)\"))",
+    "timestamp": 1791599759.4150944
+  },
+  {
+    "key": "677792be5d|groq-qwen3.8-27b|no_rag|1",
+    "config_id": "0255355cb9f3",
+    "error": "HTTP 429",
+    "timestamp": 1791600678.0489469
+  },
+  {
+    "key": "73bfdd1713|groq-gpt-oss-120b|no_rag|5",
+    "config_id": "0255355cb9f3",
+    "error": "HTTP 429",
+    "timestamp": 1791620533.7882073
+  },
+  {
+    "key": "73bfdd1713|groq-gpt-oss-120b|rag|2",
+    "config_id": "0255355cb9f3",
+    "error": "HTTP 429",
+    "timestamp": 1791620942.7662184
+  },
+  {
+    "key": "677792be5d|groq-gpt-oss-120b|no_rag|2",
+    "config_id": "0255355cb9f3",
+    "error": "HTTP 429",
+    "timestamp": 1791626278.3801234
+  },
+  {
+    "key": "677792be5d|groq-qwen3.8-27b|rag|3",
+    "config_id": "0255355cb9f3",
+    "error": "HTTP 429",
+    "timestamp": 1791628576.669193
+  },
+  {
+    "key": "4b7675a2f1|groq-gpt-oss-20b|no_rag|4",
+    "config_id": "0255355cb9f3",
+    "error": "HTTP 429",
+    "timestamp": 1791633526.2896144
+  },
+  {
+    "key": "4b7675a2f1|groq-qwen3.8-27b|rag|3",
+    "config_id": "0255355cb9f3",
+    "error": "HTTP 429",
+    "timestamp": 1791636244.4969282
+  }
+]

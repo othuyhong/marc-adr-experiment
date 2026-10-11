@@ -33,7 +33,7 @@ SEARCH_QUERIES = [
 ]
 
 MAX_RESULTS_PER_QUERY = 60      # đủ để tìm nhiều repo mới mà không tốn quá nhiều quota search
-TARGET_TOTAL = 120
+TARGET_TOTAL = 100000
 
 CONTEXT_PATTERNS = [
     r"##\s*Context(?:\s+and\s+Problem\s+Statement)?\s*\n+(.*?)(?=\n#{1,3}\s|\Z)",

@@ -1,0 +1,135 @@
+﻿url,repo,in_manual_sample,decision_status,decision_coverage,context_status,context_coverage,context_contains_decision
+https://github.com/architecture-decision-record/architecture-decision-record/blob/main/architecture-decision-record.github.io/src/content/locales/en-001/examples/api-using-json-v-grpc.md,joelparkerhenderson/architecture-decision-record,0,ok,1.0,ok,1.0,0
+https://github.com/architecture-decision-record/architecture-decision-record/blob/main/architecture-decision-record.github.io/src/content/locales/en-001/examples/browser-automation-framework-for-e2e-testing-playwright-vs-selenium.md,joelparkerhenderson/architecture-decision-record,1,ok,1.926,ok,10.475,1
+https://github.com/architecture-decision-record/architecture-decision-record/blob/main/architecture-decision-record.github.io/src/content/locales/en-001/examples/continuous-integration.md,joelparkerhenderson/architecture-decision-record,0,ok,1.0,ok,1.0,0
+https://github.com/architecture-decision-record/architecture-decision-record/blob/main/architecture-decision-record.github.io/src/content/locales/en-001/examples/docker-swarm-container-orchestration.md,joelparkerhenderson/architecture-decision-record,1,ok,1.0,ok,1.0,0
+https://github.com/architecture-decision-record/architecture-decision-record/blob/main/architecture-decision-record.github.io/src/content/locales/en-001/examples/snake-case-v-camelcase-for-a-rest-api.md,joelparkerhenderson/architecture-decision-record,0,ok,1.0,ok,1.0,0
+https://github.com/winery/winery/blob/main/docs/adr/0025-use-same-logback-test-xml-for-each-sub-project.md,eclipse/winery,0,ok (ends at consequences/rationale sub-heading),0.588,ok,1.0,0
+https://github.com/winery/winery/blob/main/docs/adr/0030-deployable-docker-components.md,eclipse/winery,0,ok (ends at consequences/rationale sub-heading),0.448,ok,1.0,0
+https://github.com/winery/winery/blob/main/docs/adr/0031-reuse-refinement-code-for-pattern-detection.md,eclipse/winery,0,ok (ends at consequences/rationale sub-heading),0.542,ok,1.0,0
+https://github.com/arachne-framework/architecture/blob/master/adr-002-configuration.md,arachne-framework/architecture,0,ok,1.0,ok,1.0,0
+https://github.com/arachne-framework/architecture/blob/master/adr-003-config-implementation.md,arachne-framework/architecture,0,ok,1.0,truncated at nested heading,0.012,0
+https://github.com/arachne-framework/architecture/blob/master/adr-004-module-loading.md,arachne-framework/architecture,0,ok,1.0,ok,1.0,0
+https://github.com/arachne-framework/architecture/blob/master/adr-006-core-runtime.md,arachne-framework/architecture,0,ok,1.0,ok,1.0,0
+https://github.com/arachne-framework/architecture/blob/master/adr-008-abstract-modules.md,arachne-framework/architecture,0,truncated at nested heading,0.55,truncated at nested heading,0.74,0
+https://github.com/arachne-framework/architecture/blob/master/adr-009-datomic-config-ontology.md,arachne-framework/architecture,0,ok,1.0,ok,1.0,0
+https://github.com/arachne-framework/architecture/blob/master/adr-010-persistent-configs.md,arachne-framework/architecture,0,ok,1.0,ok,1.0,0
+https://github.com/arachne-framework/architecture/blob/master/adr-012-additional-validation.md,arachne-framework/architecture,0,ok,1.0,ok,1.0,0
+https://github.com/arachne-framework/architecture/blob/master/adr-013-error-reporting.md,arachne-framework/architecture,0,truncated at nested heading,0.046,ok,1.0,0
+https://github.com/arachne-framework/architecture/blob/master/adr-015-data-abstraction-model.md,arachne-framework/architecture,0,truncated at nested heading,0.17,truncated at nested heading,0.283,0
+https://github.com/arachne-framework/architecture/blob/master/adr-016-db-migrations.md,arachne-framework/architecture,1,truncated at nested heading,0.176,truncated at nested heading,0.44,0
+https://github.com/arachne-framework/architecture/blob/master/adr-017-simplify-chimera-model.md,arachne-framework/architecture,1,ok,1.0,ok,1.0,0
+https://github.com/backstage/backstage/blob/master/docs/architecture-decisions/adr007-use-msw-to-mock-service-requests.md,backstage/backstage,0,ok,1.0,ok,1.0,0
+https://github.com/backstage/backstage/blob/master/docs/architecture-decisions/adr013-use-node-fetch.md,backstage/backstage,0,ok,1.0,ok,1.0,0
+https://github.com/jaegertracing/jaeger/blob/main/docs/adr/003-lazy-storage-factory-initialization.md,jaegertracing/jaeger,0,truncated at nested heading,0.039,ok,1.0,0
+https://github.com/jaegertracing/jaeger/blob/main/docs/adr/004-migrating-coverage-gating-to-github-actions.md,jaegertracing/jaeger,0,truncated at nested heading,0.152,truncated at nested heading,0.582,0
+https://github.com/jaegertracing/jaeger/blob/main/docs/adr/005-badger-storage-record-layouts.md,jaegertracing/jaeger,0,ok,1.0,truncated at nested heading,0.654,0
+https://github.com/jaegertracing/jaeger/blob/main/docs/adr/006-internal-tracing-via-otelcol-telemetry-factory.md,jaegertracing/jaeger,0,ok,1.0,truncated at nested heading,0.467,0
+https://github.com/jaegertracing/jaeger/blob/main/docs/adr/007-grafana-dashboards-modernization.md,jaegertracing/jaeger,0,truncated at nested heading,0.055,ok,1.0,0
+https://github.com/jaegertracing/jaeger/blob/main/docs/adr/008-clickhouse-storage-schema.md,jaegertracing/jaeger,0,ok,1.0,truncated at nested heading,0.177,0
+https://github.com/jaegertracing/jaeger/blob/main/docs/adr/010-trace-summary-api.md,jaegertracing/jaeger,0,truncated at nested heading,0.249,ok,1.0,0
+https://github.com/jaegertracing/jaeger/blob/main/docs/adr/013-storage-capability-declaration.md,jaegertracing/jaeger,0,ok,1.0,ok,1.0,0
+https://github.com/jaegertracing/jaeger/blob/main/docs/adr/014-synchronous-elasticsearch-writes.md,jaegertracing/jaeger,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/clients/0001-unify-spring-starter-on-multi-client-config-path.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/management/001-physical-tenant-health-status-topology.md,camunda/camunda,0,ok,1.0,truncated at nested heading,0.157,0
+https://github.com/camunda/camunda/blob/main/docs/adr/management/002-management-endpoint-authorization.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/management/003-physical-tenant-management-endpoint-inventory.md,camunda/camunda,1,truncated at nested heading,0.319,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/management/004-cluster-wide-history-backup.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/management/005-per-physical-tenant-schema-initialization.md,camunda/camunda,0,ok,1.0,truncated at nested heading,0.435,0
+https://github.com/camunda/camunda/blob/main/docs/adr/management/006-exporting-state-via-dynamic-config.md,camunda/camunda,0,truncated at nested heading,0.177,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/orchestration-cluster/0001-jvm-options-argfile-for-runtime-specific-flags.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/orchestration-cluster/0002-jdk-25-base-images-with-jdk-21-runtime-support.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/orchestration-cluster/0003-physical-tenant-request-scoping-via-pre-security-filter.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/orchestration-cluster/0004-per-physical-tenant-provider-selection-via-assigned.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/orchestration-cluster/0005-physical-tenant-routing-of-authorization-reads.md,camunda/camunda,0,truncated at nested heading,0.084,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/orchestration-cluster/0006-physical-tenant-scoped-grpc-authentication.md,camunda/camunda,0,truncated at nested heading,0.081,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/orchestration-cluster/0007-physical-tenant-configuration-resolution-and-validation.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/orchestration-cluster/0009-propagating-physical-tenant-context-across-async-authorization-reads.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/orchestration-cluster/0010-zone-aware-cluster-identity-and-partitioning.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/secrets/001-central-secret-resolution-architecture.md,camunda/camunda,0,truncated at nested heading,0.124,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/security/001-endpoint-required-permission-mapping.md,camunda/camunda,0,truncated inside code block,0.039,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/security/002-tenant-access-provider-ownership-and-seam.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/storage/001-remove-numeric-key-from-identity-entity-filters.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/adr/storage/002-per-index-shard-configuration.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/docs/monorepo-docs/architecture/components/secondary-storage/rdbms/adr/0002-use-liquibase-for-schema-management.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/identity/docs/adr/0001-cluster-embedded-identity.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/identity/docs/adr/0002-oidc-default-production-authentication.md,camunda/camunda,1,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/identity/docs/adr/0003-resource-based-authorization-model.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/identity/docs/adr/0004-multi-jwks-endpoints-per-issuer.md,camunda/camunda,1,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/identity/docs/adr/0005-support-forward-slashes-in-entity-ids.md,camunda/camunda,0,truncated at nested heading,0.095,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/identity/docs/adr/0006-userinfo-claim-augmentation-for-bearer-tokens.md,camunda/camunda,0,truncated at nested heading,0.037,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/optimize/docs/adr/001-c7-naming-conventions.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/qa/docs/adr/0001-multidb-multiple-physical-tenants-per-broker.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0001-810-message-correlation-business-id-cross-partition.md,camunda/camunda,1,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0002-810-message-start-rejection-retry.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0003-810-business-id-call-activity-propagation.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0004-810-physical-tenant-job-streaming.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0005-810-job-lease.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0006-810-late-business-id-assignment.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0008-810-suspended-job-state.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0010-810-agent-execution-in-engine-records.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0011-810-agent-definition-from-bpmn-marker.md,camunda/camunda,1,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0012-810-agent-instance-written-by-agent-runtime.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/docs/adr/0013-810-agent-history-commit-under-job-lease.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/dynamic-config/docs/adr/0001-multi-partition-group-cluster-configuration.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/camunda/camunda/blob/main/zeebe/dynamic-config/docs/adr/0002-dependency-graph-partition-group-changes.md,camunda/camunda,0,ok,1.0,ok,1.0,0
+https://github.com/weaveworks/weave-gitops/blob/main/doc/adr/0002-api-definitions-grpc.md,weaveworks/weave-gitops,0,ok,1.0,ok,1.0,0
+https://github.com/weaveworks/weave-gitops/blob/main/doc/adr/0006-when-to-use-wego-weave-gitops-and-weave-gitops.md,weaveworks/weave-gitops,0,truncated at nested heading,0.279,ok,1.0,0
+https://github.com/weaveworks/weave-gitops/blob/main/doc/adr/0008-api-service.md,weaveworks/weave-gitops,0,truncated at nested heading,0.168,ok,1.0,0
+https://github.com/weaveworks/weave-gitops/blob/main/doc/adr/0016-release-ordering.md,weaveworks/weave-gitops,0,ok,1.0,ok,1.0,0
+https://github.com/nats-io/nats-architecture-and-design/blob/d694333a43835d9c934b960d9cddbc5405e5d97d/adr/ADR-5.md,nats-io/nats-architecture-and-design,0,ok,1.0,ok,1.0,0
+https://github.com/home-assistant/architecture/blob/f4e56645d468d442f49e4fa77c623a9f1c76adb5/adr/0019-GPIO.md,home-assistant/architecture,0,ok,1.0,ok,1.0,0
+https://github.com/nats-io/nats-architecture-and-design/blob/d694333a43835d9c934b960d9cddbc5405e5d97d/adr/ADR-35.md,nats-io/nats-architecture-and-design,0,ok,1.0,ok,1.0,0
+https://github.com/home-assistant/architecture/blob/f4e56645d468d442f49e4fa77c623a9f1c76adb5/adr/0006-docker-images.md,home-assistant/architecture,0,ok,1.0,ok,1.0,0
+https://github.com/nats-io/nats-architecture-and-design/blob/d694333a43835d9c934b960d9cddbc5405e5d97d/adr/ADR-2.md,nats-io/nats-architecture-and-design,0,truncated at nested heading,0.227,ok,1.0,0
+https://github.com/nats-io/nats-architecture-and-design/blob/d694333a43835d9c934b960d9cddbc5405e5d97d/adr/ADR-4.md,nats-io/nats-architecture-and-design,0,ok,1.0,truncated at nested heading,0.345,0
+https://github.com/defenseunicorns-labs/lula1/blob/d51dc3cef3f28da3c8c3d1b92a5a70e372660ffe/adr/0004-opa-provider.md,defenseunicorns-labs/lula1,0,ok,1.0,ok,1.0,0
+https://github.com/nats-io/nats-architecture-and-design/blob/d694333a43835d9c934b960d9cddbc5405e5d97d/adr/ADR-62.md,nats-io/nats-architecture-and-design,0,ok,1.0,ok,1.0,0
+https://github.com/govuk-forms/forms/blob/44c49d49995e7071f3a93f5827573abd13e01c16/ADR/ADR021-use-auth0.md,govuk-forms/forms,0,ok,1.0,ok,1.0,0
+https://github.com/konflux-ci/architecture/blob/a51babeeae47f69f4cba98505b4d5dd66a2c73a6/ADR/0031-sprayproxy.md,konflux-ci/architecture,0,ok,1.0,ok,1.0,0
+https://github.com/eslint/rewrite/blob/36357ffadefb7f84fb677b57704af74e0edaf26e/decisions/001-rewrite-core.md,eslint/rewrite,0,ok,1.0,ok,1.0,0
+https://github.com/cds-snc/sre-bot/blob/5a23e162c4ebb4ac29ffc3b538f1cab42a49756d/decisions/errors-and-http.md,cds-snc/sre-bot,0,ok,1.0,ok,1.0,0
+https://github.com/h0x91b/dev-3.0/blob/8c5aaadef4722e73b4225b285f808ac668267e13/decisions/2026/07/16/bundle-tmux-macos.md,h0x91b/dev-3.0,0,ok,1.0,ok,1.0,0
+https://github.com/ma19zen/3M-shop/blob/83ee5f87d2b97175faaead7b607b1118f85f5e6c/docs/adr.md,ma19zen/3M-shop,0,ok,1.0,ok,1.0,0
+https://github.com/13679269754/nddz_dbmbase/blob/b83799f166c69b95caf02a42c013f4751c6f4323/docs/adr.md,13679269754/nddz_dbmbase,0,ok,1.0,ok,1.0,0
+https://github.com/hidao80/bit-rag/blob/d8191f7c2b24e4de4fefe810a37eca3414fdde81/docs/ADR.md,hidao80/bit-rag,0,ok,1.0,ok,1.0,0
+https://github.com/island-is/handbook/blob/9cf3c87152829408d7d27ca672db1485ed4a2fa1/docs/adr/0001-use-nx.md,island-is/handbook,0,ok,1.0,ok,1.0,0
+https://github.com/alphagov/search-api-v2/blob/3421e980a26e85366abc3b65489c76dfb8718473/docs/adr/003-gcp-iac.md,alphagov/search-api-v2,0,ok,1.0,ok,1.0,0
+https://github.com/microservicer/flutter-pipelines/blob/ed701fdc57bfce43af3e7beec15a964db3d68206/adr/001-CI-CD-tool.md,microservicer/flutter-pipelines,0,ok,1.0,truncated at nested heading,0.373,0
+https://github.com/XGovFormBuilder/digital-form-builder/blob/03906200013742572c2f40f74a5e15e0d212d236/docs/adr/0003-submitter.md,XGovFormBuilder/digital-form-builder,1,ok,1.0,ok,1.0,0
+https://github.com/microservicer/flutter-pipelines/blob/ed701fdc57bfce43af3e7beec15a964db3d68206/adr/004-versioning.md,microservicer/flutter-pipelines,0,ok,1.0,truncated at nested heading,0.519,0
+https://github.com/microservicer/flutter-pipelines/blob/ed701fdc57bfce43af3e7beec15a964db3d68206/adr/002-deploy-tool.md,microservicer/flutter-pipelines,0,ok,1.0,truncated at nested heading,0.522,0
+https://github.com/Rexy-5097/AdityaNet/blob/1a379f0406c20d8e86ef7caf4d1096444b738958/adr/ADR-0026.md,Rexy-5097/AdityaNet,0,ok,1.0,ok,1.0,0
+https://github.com/arcctg/kpi-architecture-lab5/blob/53fb306ffd1042f5afb718cdcb1201f574e16cc4/docs/adr/ADR.md,arcctg/kpi-architecture-lab5,0,truncated at nested heading,0.012,ok,1.0,0
+https://github.com/youness-el-mesbahy/farmentario/blob/6eea0fbfdfbc52d5d09bf3038aaef842bf4fd18c/apps/docs/ADR.md,youness-el-mesbahy/farmentario,0,ok,1.0,ok,1.0,0
+https://github.com/stayOS-Hospitality-System/stayos-transition-monorepo/blob/4ab1fae825729fa35130ae5a0aec2ce70e5485c6/docs/architecture/ADR.md,stayOS-Hospitality-System/stayos-transition-monorepo,0,ok,1.0,ok,1.0,0
+https://github.com/akilapramod/EchoMarket/blob/b61945c9b0b1ff5f22768b5a44dc115597cdec1f/docs/ADR-guide.md,akilapramod/EchoMarket,1,ok,1.0,ok,1.0,0
+https://github.com/kiapanahi/Jacques-Clouseau/blob/d42e65b03873a6c17b67b99ff1d0b53589d56db7/docs/ADR_008.md,kiapanahi/Jacques-Clouseau,0,ok,1.0,ok,1.0,0
+https://github.com/pscheit/haproxy-nomad-connector/blob/28b63d0d5c436370727dbf75d4dce49fc4f89947/docs/adr/001-haproxy-nomad-connector.md,pscheit/haproxy-nomad-connector,0,ok,1.0,ok,1.0,0
+https://github.com/z-katas/sysops-squad/blob/352e1e4b11d67fbfe11cf122c7c2d62c01f8a530/ADRs/adr_extract_code_first.md,z-katas/sysops-squad,0,ok,1.0,ok,1.0,0
+https://github.com/mad-core/mad-edge/blob/e2484a5e247502d8fba26b1435bef0027f693238/docs/adr/0003-package-layout.md,mad-core/mad-edge,1,ok,1.0,ok,1.0,0
+https://github.com/juniorpais/sales-management/blob/44962aa881ef51a7826e4ea5d659a08ed5e6d168/docs/adr/003-external-identities.md,juniorpais/sales-management,0,ok,1.0,ok,1.0,0
+https://github.com/codeStev/campaign-organizer/blob/a6813236c02cf22589ff2fee0164c70eb06cefad/docs/adr/0064-ai-text-drafting.md,codeStev/campaign-organizer,0,ok,1.0,ok,1.0,0
+https://github.com/staneswilson/gact/blob/38a7edfaa1e9fd1cffcf143bca82e88f2133d643/docs/adr/001-hexagonal-ddd.md,staneswilson/gact,0,ok,1.0,ok,1.0,0
+https://github.com/vinihcrosa/Ymir/blob/09498c024fadc2d5cf1da0a03f37b31feac5369b/docs/adr/repo-reorganization/adr-003.md,vinihcrosa/Ymir,0,ok,1.0,ok,1.0,0
+https://github.com/jocall3/G/blob/c71f1896092ccbd3ac516d2fd621311c3ff8cd57/docs/adr/002-polyglot-persistence.md,jocall3/G,0,ok,1.0,ok,1.0,0
+https://github.com/Sam123336/Ratroo_backend/blob/d4bc62ce8441a3be42b4ff53011330afeba84272/docs/adr/0005-bounded-contexts.md,Sam123336/Ratroo_backend,0,truncated at nested heading,0.02,ok,1.0,0
+https://github.com/cgastin/cash-5-lotto/blob/eaf2a5df8a30d488390188dfae19d1299aa9a076/docs/adr/003-modular-monolith.md,cgastin/cash-5-lotto,0,ok,1.0,ok,1.0,0
+https://github.com/nsekulov/PegasusWatcher/blob/cb5de8ff8855a6c553a662ff2e5eee84d8dc7eaa/README.md,nsekulov/PegasusWatcher,0,truncated at nested heading,0.315,ok,1.0,0
+https://github.com/diguzim/social-media/blob/d06fa562e908d7fb54890fb0e368367e29b6e02d/docs/ADR.md,diguzim/social-media,0,ok,1.0,ok,1.0,0
+https://github.com/louisburroughs/durion/blob/7fcc08a6ea4452e2e873479fdb055fca136541cc/docs/adr/0014-gateway-internal-service-security.adr.md,louisburroughs/durion,0,ok,1.0,ok,1.0,0
+https://github.com/alexgrauroca/practice-food-delivery-platform/blob/01b3d1f70cc9f11d90ea82f4e586a4f7483cc922/adrs/global/0002-api-gateway.md,alexgrauroca/practice-food-delivery-platform,1,ok,1.0,ok,1.0,0
+https://github.com/cloudpresser/control-surface-agent/blob/5ffe8ccb30c85abca8a10d22f156d41e08f7cd62/docs/adr/0005-telemetry-causality-and-runtime-routing.md,cloudpresser/control-surface-agent,0,ok,1.0,ok,1.0,0
+https://github.com/anastayaa/Kong-API-Gateway-and-Spring-Boot-Microservices/blob/b4219a126673a028f2c63e01e0d91babfae195db/README.md,anastayaa/Kong-API-Gateway-and-Spring-Boot-Microservices,0,ok,1.0,truncated at nested heading,0.081,0
+https://github.com/apache/james-project/blob/6aa73cd6555724c6dccc11f866b8caf571c7a307/src/adr/0053-email-rate-limiting.md,apache/james-project,0,ok,1.0,ok,1.0,0
+https://github.com/Swastik023/kubernetes-sre-incident-platform/blob/ef7cc6c756cfc56e33f7291c55a3656554dad958/ecosystem/reference/kubernaut/docs/architecture/decisions/DD-AIANALYSIS-004-storm-context-not-exposed.md,Swastik023/kubernetes-sre-incident-platform,0,ok,1.0,truncated at nested heading,0.738,0
+https://github.com/gimesha-adikari/PolyShop/blob/2e818de0c772fd186da27640933da71d1cda43e5/docs/decision-records/ADR-0014-service-timeout-and-retry-policy.md,gimesha-adikari/PolyShop,0,ok,1.0,ok,1.0,0
+https://github.com/cuishuang/explain-rust-source-code-by-chatgpt/blob/069f74b131304b074cc9336f25ded4e077e56a60/vector/rfcs/2021-12-01-9460-health-endpoint-improvements.md,cuishuang/explain-rust-source-code-by-chatgpt,0,truncated at nested heading,0.686,ok,1.0,0
+https://github.com/tiago-peixoto/claude-shapeup/blob/0bfc892306da53def47a370de5f244c560be05dc/skills/ship/SKILL.md,tiago-peixoto/claude-shapeup,0,truncated at nested heading,0.363,truncated at nested heading,0.375,1
+https://github.com/getvictor/fleet-edr/blob/9ff851eb1d9c21ad8a789edbefa31978b105bf04/docs/adr/0011-ha-architecture.md,getvictor/fleet-edr,0,ok,1.0,ok,1.0,0
+https://github.com/sokogen/antwatcher/blob/874787620637275fcb67b8ca312d69be8f25eb2d/docs/adr/0004-errors-and-retries.md,sokogen/antwatcher,0,ok,1.0,ok,1.0,0
+https://github.com/Kaikei-e/PlectoProxy/blob/c253da5dd43f6acfe9832470233320507705a18b/docs/ADR/000102.md,Kaikei-e/PlectoProxy,0,ok,1.0,ok,1.0,0
+https://github.com/Olamzkid2005/Argus-/blob/369411d7f3ea140d8c8df61dc9267e487f4f9c24/docs/adr/ADR-016.md,Olamzkid2005/Argus-,0,ok,1.0,ok,1.0,0
+https://github.com/cognitum-one/sdks/blob/811cd958aba0aedd63317a550c121f7963dc792a/docs/adr/0023-agentic-errors-retries-idempotency-cancellation-and-time-budgets.md,cognitum-one/sdks,0,truncated at nested heading,0.028,ok,1.0,0
+https://github.com/zoecloe88/n3rd_game/blob/ed2af93f6d852f4ac56dcf8c368aec3cda1d1a11/docs/ADRs/004-error-recovery-mechanisms.md,zoecloe88/n3rd_game,0,ok (ends at consequences/rationale sub-heading),0.8,ok,1.0,0
+https://github.com/kphaas/jarvis-alpha/blob/50d1b5ae8b55ad8f2bedfda64ae0aebb531c8fef/docs/adr/ADR-0036-local-output-contract-hardening.md,kphaas/jarvis-alpha,0,ok,1.0,ok,1.0,0

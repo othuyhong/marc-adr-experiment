@@ -1,0 +1,20 @@
+what,value,n
+"spearman(output chars, bertscore_precision) over generations",-0.5998992609270312,1400
+"spearman(output chars, bertscore_recall) over generations",0.17360703087985158,1400
+"spearman(output chars, bertscore_f1) over generations",-0.2858620686292449,1400
+"spearman(mean output chars, mcs_tfidf) over units",0.23583057865022503,280
+"spearman(mean output chars, mcs_tfidf) within groq-qwen3.8-27b",0.325518327355437,70
+"spearman(mean output chars, mcs_tfidf) within groq-allam-2-7b",-0.2131065795425745,70
+"spearman(mean output chars, mcs_tfidf) within groq-gpt-oss-20b",0.38073992425500525,70
+"spearman(mean output chars, mcs_tfidf) within groq-gpt-oss-120b",0.23697171702172656,70
+"spearman(mean output chars, mcs_sbert) over units",0.19987219217751329,280
+"spearman(mean output chars, mcs_sbert) within groq-qwen3.8-27b",0.2563380281690141,70
+"spearman(mean output chars, mcs_sbert) within groq-allam-2-7b",-0.3202547481073304,70
+"spearman(mean output chars, mcs_sbert) within groq-gpt-oss-20b",0.45464486612592764,70
+"spearman(mean output chars, mcs_sbert) within groq-gpt-oss-120b",-0.11787348328229266,70
+"median output/reference length ratio, groq-qwen3.8-27b",1.4274536110471536,350
+"median output/reference length ratio, groq-allam-2-7b",1.1546576361302157,350
+"median output/reference length ratio, groq-gpt-oss-20b",2.5152669912060137,350
+"median output/reference length ratio, groq-gpt-oss-120b",3.629562613362785,350
+median reference decision chars (test set),1063.0,35
+overall truncation rate (finish_reason = length),0.10285714285714286,1400

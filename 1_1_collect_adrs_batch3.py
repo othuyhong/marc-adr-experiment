@@ -171,7 +171,7 @@ def main():
         log_rows.append(row)
 
         # dừng sớm nếu đã đạt đủ 120 ADR để tiết kiệm thời gian/quota — comment dòng dưới nếu muốn quét hết
-        if len(dataset) >= 120:
+        if len(dataset) >= 100000:
             print(f"\n[ĐỦ MỤC TIÊU] Đã đạt {len(dataset)} ADR (>=120) — dừng sớm, không cần quét nốt danh sách.")
             break
 

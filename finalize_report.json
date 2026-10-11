@@ -1,0 +1,49 @@
+{
+  "before": 134,
+  "after": 88,
+  "not_adr": 5,
+  "out_of_scope": 40,
+  "label_changed": 20,
+  "not_in_sheet": 0,
+  "decision_reextracted": 20,
+  "context_reextracted": 12,
+  "source_unavailable": 0,
+  "decision_too_short": 1,
+  "not_test_eligible": 18,
+  "context_too_short": 0,
+  "group_counts": {
+    "G1_ServiceDecomposition": 11,
+    "G2_Communication": 11,
+    "G3_DataManagement": 15,
+    "G4_APIGatewayDiscovery": 8,
+    "G5_DeploymentOrchestration": 18,
+    "G6_Resilience": 8,
+    "G7_ObservabilitySecurity": 17
+  },
+  "group_counts_test_eligible": {
+    "G1_ServiceDecomposition": 11,
+    "G2_Communication": 7,
+    "G3_DataManagement": 12,
+    "G4_APIGatewayDiscovery": 8,
+    "G5_DeploymentOrchestration": 17,
+    "G6_Resilience": 3,
+    "G7_ObservabilitySecurity": 12
+  },
+  "label_source_original_counts": {
+    "auto": 31,
+    "manual": 34,
+    "search": 23
+  },
+  "n_repos": 39,
+  "largest_repo": {
+    "repo": "camunda/camunda",
+    "n": 33
+  },
+  "decision_chars_median": 1279,
+  "decision_chars_max": 16843,
+  "thresholds": {
+    "min_context": 100,
+    "min_decision": 40,
+    "max_decision_for_test": 4000
+  }
+}

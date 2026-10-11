@@ -1,0 +1,13 @@
+condition,what,value,bootstrap_share,note
+no_rag,thứ hạng theo bertscore_f1,groq-qwen3.8-27b > groq-allam-2-7b > groq-gpt-oss-20b > groq-gpt-oss-120b,1.0,tỷ lệ bootstrap mà model đứng đầu giữ nguyên
+no_rag,thứ hạng theo mcs_tfidf,groq-gpt-oss-120b > groq-qwen3.8-27b > groq-gpt-oss-20b > groq-allam-2-7b,0.993,tỷ lệ bootstrap mà model đứng đầu giữ nguyên
+no_rag,thứ hạng theo mcs_sbert,groq-gpt-oss-120b > groq-qwen3.8-27b > groq-gpt-oss-20b > groq-allam-2-7b,0.849,tỷ lệ bootstrap mà model đứng đầu giữ nguyên
+no_rag,bertscore_f1 vs mcs_tfidf,kendall_tau=-0.333 (4 model),0.9932,tỷ lệ bootstrap mà model tốt nhất theo F1 KHÁC model nhất quán nhất
+no_rag,bertscore_f1 vs mcs_sbert,kendall_tau=-0.333 (4 model),0.849,tỷ lệ bootstrap mà model tốt nhất theo F1 KHÁC model nhất quán nhất
+no_rag,mcs_tfidf vs mcs_sbert,kendall_tau=1.000 (4 model),0.8464,tỷ lệ bootstrap mà hai cách đo chọn CÙNG model nhất quán nhất
+rag,thứ hạng theo bertscore_f1,groq-qwen3.8-27b > groq-allam-2-7b > groq-gpt-oss-120b > groq-gpt-oss-20b,0.9996,tỷ lệ bootstrap mà model đứng đầu giữ nguyên
+rag,thứ hạng theo mcs_tfidf,groq-gpt-oss-120b > groq-qwen3.8-27b > groq-gpt-oss-20b > groq-allam-2-7b,0.7758,tỷ lệ bootstrap mà model đứng đầu giữ nguyên
+rag,thứ hạng theo mcs_sbert,groq-gpt-oss-120b > groq-qwen3.8-27b > groq-gpt-oss-20b > groq-allam-2-7b,0.5852,tỷ lệ bootstrap mà model đứng đầu giữ nguyên
+rag,bertscore_f1 vs mcs_tfidf,kendall_tau=0.000 (4 model),0.776,tỷ lệ bootstrap mà model tốt nhất theo F1 KHÁC model nhất quán nhất
+rag,bertscore_f1 vs mcs_sbert,kendall_tau=0.000 (4 model),0.5856,tỷ lệ bootstrap mà model tốt nhất theo F1 KHÁC model nhất quán nhất
+rag,mcs_tfidf vs mcs_sbert,kendall_tau=1.000 (4 model),0.6762,tỷ lệ bootstrap mà hai cách đo chọn CÙNG model nhất quán nhất

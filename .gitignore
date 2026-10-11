@@ -1,4 +1,4 @@
-# === TUYỆT ĐỐI không commit API key ===
+# Never commit API keys
 .env
 *.env
 
@@ -8,7 +8,20 @@ __pycache__/
 .venv/
 venv/
 
-# Log tạm / file trung gian không cần thiết cho người khác
+# Cached third-party source files (re-downloaded by the scripts)
+adr_sources/
+
+# Trial runs, backups and intermediate files
+test.json
+test2.json
+generation_results_backup.json
+generation_results_qwen_reasoning_low_DISCARDED.json
+labeled_adrs_before_dedupe.json
+review_sheet.csv
 sample_to_review.json
 skipped_files_log.csv
+skipped_labels.json
 discovered_repos.txt
+raw_adrs.json
+auto_labeled_review.csv
+*.tmp

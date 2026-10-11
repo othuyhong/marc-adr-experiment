@@ -1,34 +1,42 @@
 """
 2_generation_layer.py
-BƯỚC 2 — Generation Layer: gọi 4 model MIỄN PHÍ (Gemini, Groq-Llama, Groq-Gemma2, OpenRouter-DeepSeek-R1)
-sinh Decision từ Context, có 2 điều kiện (RAG / không RAG), lặp N lần mỗi tổ hợp.
+BƯỚC 2 — Generation Layer: 4 model trên Groq sinh Decision từ Context,
+2 điều kiện (no_rag / rag), lặp N_REPEATS lần mỗi tổ hợp.
 
-Yêu cầu cài đặt:
-    pip install requests scikit-learn --break-system-packages
+THAY ĐỔI SO VỚI BẢN CŨ:
+  [R3#11] Retrieval LOẠI mọi ADR cùng repo với ADR đang test; lưu danh sách ADR đã
+          retrieve (url, repo, độ tương đồng) vào từng bản ghi rag.
+  [R3#17] Cả 4 model dùng CÙNG một giới hạn MAX_COMPLETION_TOKENS (bản cũ: 300 vs 700).
+          Lưu finish_reason và usage thật từ API (không còn ước lượng 4 ký tự/token).
+  [R3#17] Tách khối <think>...</think> khỏi output trước khi lưu; bản gốc giữ ở raw_output.
+  Output rỗng sau khi tách: thử lại, nếu vẫn rỗng thì ghi vào generation_failures.json
+          (không lưu vào kết quả, nên không cần 2b_cleanup_empty_results.py nữa).
+  Checkpoint gắn với cấu hình: nếu file kết quả cũ được sinh bằng split/temperature/
+          max_tokens khác thì script DỪNG thay vì âm thầm trộn hai loại kết quả.
+  429: đợi đúng theo header retry-after; nếu phải đợi quá lâu (hết hạn mức ngày) thì
+          tạm bỏ model đó trong lần chạy này, các model khác vẫn chạy tiếp.
 
-Yêu cầu API key (đều lấy MIỄN PHÍ, không cần thẻ):
-    - Google AI Studio : https://aistudio.google.com/app/apikey
-    - Groq              : https://console.groq.com/keys
-    - OpenRouter        : https://openrouter.ai/keys
-
-Set biến môi trường trước khi chạy (cmd):
-    set GOOGLE_API_KEY=xxxx
-    set GROQ_API_KEY=xxxx
-    set OPENROUTER_API_KEY=xxxx
+Yêu cầu:
+    pip install requests scikit-learn
+    $env:GROQ_API_KEY="..."        (PowerShell)
 
 Cách chạy:
     python 2_generation_layer.py
 
-Đặc điểm quan trọng: SCRIPT CÓ CHECKPOINT — nếu bị dừng giữa chừng (rate limit, mất mạng...),
-chạy lại lệnh y hệt sẽ tự động BỎ QUA các tổ hợp đã chạy xong, không lặp lại từ đầu.
+Thí nghiệm temperature (R3#18), ghi ra file riêng để không trộn với kết quả chính:
+    python 2_generation_layer.py --temperature 0   --conditions no_rag --limit 10 --out generation_T0.json
+    python 2_generation_layer.py --temperature 0.7 --conditions no_rag --limit 10 --out generation_T07.json
 
-Kết quả: generation_results.json — mỗi bản ghi là 1 lần sinh (test_id, model, condition, run_index, decision_generated)
+Bị dừng giữa chừng -> chạy lại đúng lệnh cũ, script tự bỏ qua phần đã xong.
 """
-import os
-import re
-import json
-import time
+import argparse
 import hashlib
+import json
+import os
+import random
+import re
+import time
+
 import requests
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -36,192 +44,262 @@ from sklearn.metrics.pairwise import cosine_similarity
 # ----------------------------------------------------------------------
 # CẤU HÌNH
 # ----------------------------------------------------------------------
-N_REPEATS = 2          # số lần lặp mỗi tổ hợp (rút gọn cho deadline 2 ngày; tăng lên 5 nếu có thời gian)
-TOP_K_RAG = 4           # số ADR gần nhất lấy từ RAG pool
+N_REPEATS = 5
+TOP_K_RAG = 4
 TEMPERATURE = 0.3
-MAX_TOKENS = 300
+MAX_COMPLETION_TOKENS = 1024     # DÙNG CHUNG cho cả 4 model
+MIN_ANSWER_CHARS = 10
+MAX_ATTEMPTS = 3                 # số lần thử cho mỗi tổ hợp trong một lần chạy
+LONG_WAIT_SECONDS = 600          # retry-after dài hơn mức này = coi như hết hạn mức ngày
+SECONDS_BETWEEN_CALLS = 1.0
+SAMPLE_SEED = 42                 # dùng cho --limit
 
-GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 
-MODELS = ["groq-gpt-oss-120b", "groq-gpt-oss-20b", "groq-qwen3.6-27b", "groq-llama-3.1-8b"]
-CONDITIONS = ["no_rag", "rag"]
-
-MIN_INTERVAL = {
-    "groq-gpt-oss-120b": 1.0,
-    "groq-gpt-oss-20b": 1.0,
-    "groq-qwen3.6-27b": 1.0,
-    "groq-llama-3.1-8b": 1.0,
+# tên dùng trong bài -> tên model trên Groq
+MODELS = {
+    "groq-gpt-oss-120b": "openai/gpt-oss-120b",
+    "groq-gpt-oss-20b": "openai/gpt-oss-20b",
+    "groq-qwen3.8-27b": "qwen/qwen3.8-27b",      # thay qwen3.6-27b (Groq ngừng 14/9/2026)
+    "groq-allam-2-7b": "allam-2-7b",             # thay llama-3.1-8b-instant (Groq ngừng 16/8/2026)
 }
+# Tham số riêng của từng model. Mục tiêu: phần suy luận KHÔNG ăn vào MAX_COMPLETION_TOKENS.
+#   - GPT-OSS: mức thấp nhất là "low" (chạy thử: chỉ 7-14 token suy luận mỗi lượt).
+#   - Qwen3.8: "none" = chế độ instruct, không suy luận. Chạy thử với "low" thì 44% token
+#     output là suy luận (TB 308 token/lượt), làm câu trả lời ngắn đi và không so được với model khác.
+# Số token suy luận thật của từng lượt vẫn được lưu để báo cáo.
+# Lưu ý: allam-2-7b chỉ có cửa sổ ngữ cảnh 4.096 token (prompt + output).
+EXTRA_PARAMS = {
+    "groq-gpt-oss-120b": {"reasoning_effort": "low"},
+    "groq-gpt-oss-20b": {"reasoning_effort": "low"},
+    "groq-qwen3.8-27b": {"reasoning_effort": "none"},
+    "groq-allam-2-7b": {},
+}
+ALL_CONDITIONS = ["no_rag", "rag"]
 
-RESULTS_FILE = "generation_results.json"
+SYSTEM_PROMPT = ("This is an Architectural Decision Record for a software. "
+                 "Give a ## Decision corresponding to the ## Context provided.")
+
+FAILURES_FILE = "generation_failures.json"
 
 
 # ----------------------------------------------------------------------
-# GỌI API — 1 hàm thống nhất, bên trong rẽ nhánh theo model
+# GỌI API
 # ----------------------------------------------------------------------
-def call_gemini(prompt, model_name="gemini-2.0-flash"):
-    if not GOOGLE_API_KEY:
-        raise RuntimeError("Chưa set GOOGLE_API_KEY")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GOOGLE_API_KEY}"
+def call_groq(model, prompt, temperature):
     body = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": TEMPERATURE, "maxOutputTokens": MAX_TOKENS},
+        "model": MODELS[model],
+        "messages": [{"role": "system", "content": SYSTEM_PROMPT},
+                     {"role": "user", "content": prompt}],
+        "temperature": temperature,
+        "max_completion_tokens": MAX_COMPLETION_TOKENS,
     }
-    r = requests.post(url, json=body, timeout=60)
+    body.update(EXTRA_PARAMS.get(model, {}))
+    r = requests.post(GROQ_URL, headers={"Authorization": f"Bearer {GROQ_API_KEY}"},
+                      json=body, timeout=120)
     r.raise_for_status()
     data = r.json()
-    return data["candidates"][0]["content"]["parts"][0]["text"].strip()
-
-
-def call_groq(prompt, model_name):
-    if not GROQ_API_KEY:
-        raise RuntimeError("Chưa set GROQ_API_KEY")
-    url = "https://api.groq.com/openai/v1/chat/completions"
-    headers = {"Authorization": f"Bearer {GROQ_API_KEY}"}
-    body = {
-        "model": model_name,
-        "messages": [
-            {"role": "system", "content": "This is an Architectural Decision Record for a software. "
-                                           "Give a ## Decision corresponding to the ## Context provided."},
-            {"role": "user", "content": prompt},
-        ],
-        "temperature": TEMPERATURE,
-        "max_tokens": MAX_TOKENS,
+    choice = data["choices"][0]
+    msg = choice.get("message") or {}
+    return {
+        "raw": msg.get("content") or "",
+        "reasoning": msg.get("reasoning") or "",
+        "finish_reason": choice.get("finish_reason"),
+        "usage": data.get("usage") or {},
     }
-    # GPT-OSS là reasoning model -> cần giảm mức suy luận và tăng max_tokens,
-    # nếu không phần suy luận nội bộ sẽ chiếm hết token, để lại nội dung trả lời rỗng
-    if model_name.startswith("openai/gpt-oss"):
-        body["reasoning_effort"] = "low"
-        body["max_tokens"] = 700
-    r = requests.post(url, headers=headers, json=body, timeout=60)
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"].strip()
 
 
-def call_openrouter_deepseek(prompt):
-    if not OPENROUTER_API_KEY:
-        raise RuntimeError("Chưa set OPENROUTER_API_KEY")
-    url = "https://openrouter.ai/api/v1/chat/completions"
-    headers = {"Authorization": f"Bearer {OPENROUTER_API_KEY}"}
-    body = {
-        "model": "deepseek/deepseek-r1-0528:free",
-        "messages": [
-            {"role": "system", "content": "This is an Architectural Decision Record for a software. "
-                                           "Give a ## Decision corresponding to the ## Context provided."},
-            {"role": "user", "content": prompt},
-        ],
-        "temperature": TEMPERATURE,
-        "max_tokens": MAX_TOKENS,
-    }
-    r = requests.post(url, headers=headers, json=body, timeout=90)
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"].strip()
+THINK_CLOSED = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
+THINK_OPEN = re.compile(r"<think>.*\Z", re.DOTALL | re.IGNORECASE)
 
 
-def generate(model, prompt):
-    if model == "groq-gpt-oss-120b":
-        return call_groq(prompt, "openai/gpt-oss-120b")
-    elif model == "groq-gpt-oss-20b":
-        return call_groq(prompt, "openai/gpt-oss-20b")
-    elif model == "groq-qwen3.6-27b":
-        return call_groq(prompt, "qwen/qwen3.6-27b")
-    elif model == "groq-llama-3.1-8b":
-        return call_groq(prompt, "llama-3.1-8b-instant")
-    else:
-        raise ValueError(f"Model không xác định: {model}")
+def strip_think(text):
+    """Bỏ khối suy luận <think>. Khối chưa đóng (bị cắt giữa lúc suy luận) -> bỏ đến hết."""
+    cleaned = THINK_CLOSED.sub("", text)
+    cleaned = THINK_OPEN.sub("", cleaned)
+    cleaned = cleaned.strip()
+    return cleaned, cleaned != text.strip()
+
+
+def retry_after_seconds(response):
+    try:
+        return float(response.headers.get("retry-after", ""))
+    except (TypeError, ValueError):
+        return 30.0
 
 
 # ----------------------------------------------------------------------
-# RAG RETRIEVAL — TF-IDF (chạy local, miễn phí, không cần embedding API)
+# RAG RETRIEVAL — TF-IDF, loại ADR cùng repo
 # ----------------------------------------------------------------------
 def build_rag_index(rag_pool):
-    corpus = [item["context"] for item in rag_pool]
     vectorizer = TfidfVectorizer(max_features=5000, stop_words="english")
-    matrix = vectorizer.fit_transform(corpus)
+    matrix = vectorizer.fit_transform([x["context"] for x in rag_pool])
     return vectorizer, matrix
 
 
-def retrieve_top_k(query_context, vectorizer, matrix, rag_pool, k=TOP_K_RAG):
-    query_vec = vectorizer.transform([query_context])
-    sims = cosine_similarity(query_vec, matrix)[0]
-    top_idx = sims.argsort()[::-1][:k]
-    return [rag_pool[i] for i in top_idx]
+def retrieve_top_k(item, vectorizer, matrix, rag_pool, k=TOP_K_RAG):
+    """Trả về (danh sách ADR, điểm tương đồng, số ADR cùng repo đã bị loại)."""
+    sims = cosine_similarity(vectorizer.transform([item["context"]]), matrix)[0]
+    allowed = [i for i, x in enumerate(rag_pool)
+               if x["repo"] != item["repo"] and x["url"] != item["url"]]
+    n_excluded = len(rag_pool) - len(allowed)
+    top = sorted(allowed, key=lambda i: sims[i], reverse=True)[:k]
+    return [rag_pool[i] for i in top], [float(sims[i]) for i in top], n_excluded
 
 
-# ----------------------------------------------------------------------
-# PROMPT BUILDER — kế thừa định dạng ## Context / ## Decision từ Dhar et al.
-# ----------------------------------------------------------------------
-def build_prompt(context, retrieved_examples=None):
-    if retrieved_examples:
-        knowledge_block = "\n\n".join(
+def build_prompt(context, retrieved=None):
+    if retrieved:
+        block = "\n\n".join(
             f"## Related Example\nContext: {ex['context'][:400]}\nDecision: {ex['decision'][:300]}"
-            for ex in retrieved_examples
-        )
-        return f"{knowledge_block}\n\n## Context\n{context}\n\n## Decision\n"
+            for ex in retrieved)
+        return f"{block}\n\n## Context\n{context}\n\n## Decision\n"
     return f"## Context\n{context}\n\n## Decision\n"
 
 
 # ----------------------------------------------------------------------
-# CHECKPOINT — key duy nhất cho mỗi tổ hợp (test_id, model, condition, run_index)
+# CHECKPOINT
 # ----------------------------------------------------------------------
 def make_test_id(item):
     return hashlib.md5(item["url"].encode("utf-8")).hexdigest()[:10]
 
 
-def load_existing_results():
-    if os.path.exists(RESULTS_FILE):
-        with open(RESULTS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
-
-
-def make_combo_key(test_id, model, condition, run_index):
+def combo_key(test_id, model, condition, run_index):
     return f"{test_id}|{model}|{condition}|{run_index}"
 
 
-def main():
-    with open("gold_test_set.json", "r", encoding="utf-8") as f:
-        test_set = json.load(f)
-    with open("rag_pool.json", "r", encoding="utf-8") as f:
-        rag_pool = json.load(f)
-
-    print(f"Test set: {len(test_set)} ADR | RAG pool: {len(rag_pool)} ADR")
-    vectorizer, matrix = build_rag_index(rag_pool)
-
-    results = load_existing_results()
-    done_keys = {
-        make_combo_key(r["test_id"], r["model"], r["condition"], r["run_index"])
-        for r in results
+def config_id(test_set, rag_pool, temperature):
+    """Dấu vân tay của mọi thứ ảnh hưởng đến output. Khác dấu = không được trộn kết quả."""
+    cfg = {
+        "split": hashlib.md5("\n".join(
+            sorted(x["url"] for x in test_set) + ["--"] + sorted(x["url"] for x in rag_pool)
+        ).encode("utf-8")).hexdigest(),
+        "temperature": temperature,
+        "max_completion_tokens": MAX_COMPLETION_TOKENS,
+        "top_k": TOP_K_RAG,
+        "models": MODELS,
+        "extra": EXTRA_PARAMS,
+        "system": SYSTEM_PROMPT,
+        "retrieval": "tfidf-exclude-same-repo",
     }
+    return hashlib.md5(json.dumps(cfg, sort_keys=True).encode("utf-8")).hexdigest()[:12]
 
-    total_combos = len(test_set) * len(MODELS) * len(CONDITIONS) * N_REPEATS
-    print(f"Tổng số tổ hợp cần chạy: {total_combos}  (đã có sẵn: {len(done_keys)})")
 
-    count_done_this_run = 0
-    count_errors = 0
+def load_json(path, default):
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return default
 
-    for item in test_set:
+
+def save_json(path, obj):
+    """Ghi qua file tạm rồi đổi tên -> mất điện giữa lúc ghi không làm hỏng file kết quả."""
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(obj, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
+
+
+# ----------------------------------------------------------------------
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--temperature", type=float, default=TEMPERATURE)
+    ap.add_argument("--conditions", nargs="+", default=ALL_CONDITIONS, choices=ALL_CONDITIONS)
+    ap.add_argument("--limit", type=int, default=None,
+                    help="chỉ chạy trên N ADR test lấy ngẫu nhiên (seed cố định)")
+    ap.add_argument("--out", default="generation_results.json")
+    args = ap.parse_args()
+
+    if not GROQ_API_KEY:
+        raise SystemExit("Chưa set GROQ_API_KEY.")
+
+    test_set = load_json("gold_test_set.json", None)
+    rag_pool = load_json("rag_pool.json", None)
+    if test_set is None or rag_pool is None:
+        raise SystemExit("Thiếu gold_test_set.json / rag_pool.json. Chạy 1_4_split_dataset.py trước.")
+
+    cfg = config_id(test_set, rag_pool, args.temperature)
+    results = load_json(args.out, [])
+    old_cfgs = {r.get("config_id") for r in results}
+    if results and old_cfgs != {cfg}:
+        raise SystemExit(
+            f"{args.out} chứa kết quả sinh bằng cấu hình khác ({sorted(map(str, old_cfgs))}) "
+            f"so với cấu hình hiện tại ({cfg}): dataset, temperature hoặc max_tokens đã đổi.\n"
+            f"Đổi tên/xóa file cũ, hoặc dùng --out để ghi sang file khác.")
+
+    run_items = test_set
+    if args.limit is not None and args.limit < len(test_set):
+        run_items = random.Random(SAMPLE_SEED).sample(test_set, args.limit)
+
+    vectorizer, matrix = build_rag_index(rag_pool)
+    done = {combo_key(r["test_id"], r["model"], r["condition"], r["run_index"]) for r in results}
+    total = len(run_items) * len(MODELS) * len(args.conditions) * N_REPEATS
+    print(f"Cấu hình {cfg} | T={args.temperature} | max_completion_tokens={MAX_COMPLETION_TOKENS}")
+    print(f"Test: {len(run_items)} ADR | RAG pool: {len(rag_pool)} | "
+          f"cần {total} lượt gọi, đã có {len(done)}")
+
+    failures = load_json(FAILURES_FILE, [])
+    blocked = {}          # model -> lý do tạm bỏ trong lần chạy này
+    n_new = 0
+
+    for item in run_items:
         test_id = make_test_id(item)
-        retrieved = retrieve_top_k(item["context"], vectorizer, matrix, rag_pool)
+        retrieved, sims, n_excluded = retrieve_top_k(item, vectorizer, matrix, rag_pool)
 
-        for condition in CONDITIONS:
-            prompt = build_prompt(item["context"], retrieved if condition == "rag" else None)
+        for condition in args.conditions:
+            use_rag = condition == "rag"
+            prompt = build_prompt(item["context"], retrieved if use_rag else None)
 
             for model in MODELS:
                 for run_index in range(1, N_REPEATS + 1):
-                    key = make_combo_key(test_id, model, condition, run_index)
-                    if key in done_keys:
+                    key = combo_key(test_id, model, condition, run_index)
+                    if key in done or model in blocked:
                         continue
 
-                    try:
-                        decision_text = generate(model, prompt)
-                        if not decision_text or len(decision_text.strip()) < 10:
-                            raise ValueError(f"Output rỗng hoặc quá ngắn ({len(decision_text or '')} ký tự) "
-                                              f"-> có thể do reasoning model dùng hết token, không lưu kết quả này")
-                        results.append({
+                    last_error = None
+                    saved = False
+                    for attempt in range(1, MAX_ATTEMPTS + 1):
+                        try:
+                            out = call_groq(model, prompt, args.temperature)
+                        except requests.exceptions.HTTPError as e:
+                            status = e.response.status_code if e.response is not None else 0
+                            last_error = f"HTTP {status}"
+                            if status == 429:
+                                wait = retry_after_seconds(e.response)
+                                if wait > LONG_WAIT_SECONDS:
+                                    blocked[model] = f"hết hạn mức, cần đợi {wait / 60:.0f} phút"
+                                    break
+                                print(f"    [429] {model}: đợi {wait:.0f}s")
+                                time.sleep(wait + 1)
+                            elif status >= 500:
+                                time.sleep(10)
+                            else:
+                                body = e.response.text[:200] if e.response is not None else ""
+                                if status in (401, 403, 404):
+                                    # sai key hoặc model không tồn tại: mọi lượt sau cũng sẽ lỗi
+                                    blocked[model] = f"HTTP {status}: {body}"
+                                else:
+                                    # lỗi riêng của lượt này (vd prompt dài quá cửa sổ ngữ cảnh)
+                                    last_error = f"HTTP {status}: {body}"
+                                break
+                            continue
+                        except requests.exceptions.RequestException as e:
+                            last_error = f"mạng: {e}"
+                            time.sleep(10)
+                            continue
+
+                        answer, had_think = strip_think(out["raw"])
+                        if len(answer) < MIN_ANSWER_CHARS:
+                            last_error = (f"output rỗng sau khi bỏ <think> "
+                                          f"(finish_reason={out['finish_reason']})")
+                            time.sleep(SECONDS_BETWEEN_CALLS)
+                            continue
+
+                        usage = out["usage"]
+                        details = usage.get("completion_tokens_details") or {}
+                        rec = {
                             "test_id": test_id,
+                            "url": item["url"],
                             "repo": item["repo"],
                             "group": item.get("group", "unknown"),
                             "model": model,
@@ -229,37 +307,57 @@ def main():
                             "run_index": run_index,
                             "context": item["context"],
                             "actual_decision": item["decision"],
-                            "generated_decision": decision_text,
+                            "generated_decision": answer,
+                            "finish_reason": out["finish_reason"],
+                            "truncated": out["finish_reason"] == "length",
+                            "prompt_tokens": usage.get("prompt_tokens"),
+                            "completion_tokens": usage.get("completion_tokens"),
+                            "reasoning_tokens": details.get("reasoning_tokens"),
+                            "reasoning_chars": len(out["reasoning"]),
+                            "had_think_block": had_think,
+                            "temperature": args.temperature,
+                            "max_completion_tokens": MAX_COMPLETION_TOKENS,
+                            "config_id": cfg,
                             "timestamp": time.time(),
-                        })
-                        done_keys.add(key)
-                        count_done_this_run += 1
-                        print(f"[OK] {test_id} | {model} | {condition} | run {run_index}")
+                        }
+                        if had_think:
+                            rec["raw_output"] = out["raw"]
+                        if use_rag:
+                            rec["retrieved"] = [
+                                {"url": ex["url"], "repo": ex["repo"], "similarity": round(s, 4)}
+                                for ex, s in zip(retrieved, sims)]
+                            rec["n_same_repo_excluded"] = n_excluded
+                        results.append(rec)
+                        saved = True
+                        done.add(key)
+                        n_new += 1
+                        save_json(args.out, results)
+                        flag = " [BỊ CẮT]" if rec["truncated"] else ""
+                        print(f"[OK] {test_id} | {model} | {condition} | run {run_index}{flag}")
+                        time.sleep(SECONDS_BETWEEN_CALLS)
+                        break
+                    if not saved and model not in blocked:
+                        failures.append({"key": key, "config_id": cfg, "error": last_error,
+                                         "timestamp": time.time()})
+                        save_json(FAILURES_FILE, failures)
+                        print(f"[BỎ QUA] {key}: {last_error}")
 
-                        # lưu ngay sau mỗi lần gọi thành công -> mất điện/rớt mạng không mất dữ liệu
-                        with open(RESULTS_FILE, "w", encoding="utf-8") as f:
-                            json.dump(results, f, ensure_ascii=False, indent=2)
+                    if model in blocked:
+                        print(f"[TẠM BỎ {model}] {blocked[model]}")
 
-                        time.sleep(MIN_INTERVAL.get(model, 2.0))
-
-                    except requests.exceptions.HTTPError as e:
-                        status = e.response.status_code if e.response is not None else "?"
-                        print(f"[LỖI HTTP {status}] {test_id} | {model} | {condition} | run {run_index}: {e}")
-                        count_errors += 1
-                        if status == 429:
-                            print("    -> Bị rate limit, đợi 30s...")
-                            time.sleep(30)
-                    except Exception as e:
-                        print(f"[LỖI] {test_id} | {model} | {condition} | run {run_index}: {e}")
-                        count_errors += 1
-                        time.sleep(3)
-
-    print(f"\n=== HOÀN TẤT ===")
-    print(f"Đã sinh mới trong lần chạy này: {count_done_this_run}")
-    print(f"Lỗi gặp phải: {count_errors}")
-    print(f"Tổng kết quả tích lũy trong {RESULTS_FILE}: {len(results)} / {total_combos}")
-    if len(results) < total_combos:
-        print("Chưa xong toàn bộ -> CHẠY LẠI SCRIPT NÀY (sẽ tự bỏ qua phần đã xong, không chạy lại từ đầu).")
+    n_done = sum(1 for r in results
+                 if combo_key(r["test_id"], r["model"], r["condition"], r["run_index"]) in done)
+    print("\n=== KẾT THÚC LẦN CHẠY ===")
+    print(f"Sinh mới: {n_new} | Tổng trong {args.out}: {n_done}")
+    for m, why in blocked.items():
+        print(f"  Model tạm bỏ: {m} ({why})")
+    remaining = total - sum(
+        1 for it in run_items for c in args.conditions for m in MODELS
+        for i in range(1, N_REPEATS + 1) if combo_key(make_test_id(it), m, c, i) in done)
+    if remaining:
+        print(f"Còn thiếu {remaining}/{total} lượt -> chạy lại đúng lệnh này để làm tiếp.")
+    else:
+        print("ĐÃ ĐỦ toàn bộ tổ hợp.")
 
 
 if __name__ == "__main__":

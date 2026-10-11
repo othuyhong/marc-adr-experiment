@@ -1,0 +1,8 @@
+group,n_test_adrs
+G1_ServiceDecomposition,5
+G2_Communication,5
+G3_DataManagement,7
+G4_APIGatewayDiscovery,4
+G5_DeploymentOrchestration,6
+G6_Resilience,3
+G7_ObservabilitySecurity,5

@@ -1,13 +1,19 @@
-# === Thu thập dữ liệu (Bước 1) ===
+# Data collection (step 1)
 requests
 PyGithub
 
-# === Xử lý dữ liệu / RAG retrieval (Bước 1 & 2) ===
+# Data processing, retrieval, statistics (steps 1-3)
 scikit-learn
 pandas
+numpy
+scipy
 
-# === Đánh giá (Bước 3) ===
+# Evaluation (step 3)
 bert-score
-# QUAN TRỌNG: bert-score chưa tương thích với transformers v5.x (phát hành 26/1/2026)
-# Ép cài bản 4.x, nếu không sẽ lỗi "RobertaTokenizer has no attribute build_inputs_with_special_tokens"
+sentence-transformers
+# bert-score is not compatible with transformers 5.x
+# ("RobertaTokenizer has no attribute build_inputs_with_special_tokens")
 transformers<5
+
+# Figure
+matplotlib

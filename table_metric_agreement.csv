@@ -1,0 +1,6 @@
+comparison,spearman_rho,n
+MCS: tfidf vs sbert,0.6351126927639383,280
+DCR: tfidf vs sbert,0.6702226094507977,1400
+độ dài output vs MCS tfidf,0.23583057865022503,280
+độ dài output vs MCS sbert,0.19987219217751329,280
+DDI: tfidf vs sbert,0.6054947154087554,350
